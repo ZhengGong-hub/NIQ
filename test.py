@@ -1,9 +1,10 @@
 # https://docs.snowflake.com/en/developer-guide/python-connector/python-connector
 # pip install snowflake-connector-python
 import snowflake.connector
+import pandas as pd 
 
-USER_NAME = '<YOUR_USERNAME>' ## your username
-PASSWORD = '<YOUR_PASSWORD>' ## your password
+USER_NAME = 'Z.GONG@INOVESTPARTNERS.COM' ## your username
+PASSWORD = '1234ASDFasdf!' ## your password
 SNOWFLAKE_ACCOUNT = 'icb36344.us-east-1'
 SNOWFLAKE_WAREHOUSE = "INOVEST_PARTNERS"
 SNOWFLAKE_SCHEMA = "NIQ_ERECEIPT.INOVEST"
@@ -31,12 +32,20 @@ def run_sql(cur, sql):
 ## start connection
 cur = start_snowflake_connection()
 
-## run a sql
-sql = """SELECT * FROM NIQ_ERECEIPT.INOVEST.NIQ_QUANT_FEED_DAILY LIMIT 100;"""
-results = run_sql(cur, sql)
-print(results)
+if False:
+    ## run a sql
+    sql = """SELECT * FROM NIQ_ERECEIPT.INOVEST.NIQ_QUANT_FEED_DAILY LIMIT 100;"""
+    results = run_sql(cur, sql)
+    results = pd.DataFrame(data=results)
+    print(results)
 
 ## run a sql
-sql = """SELECT * FROM NIQ_ERECEIPT.INOVEST.NIQ_QUANT_FEED_MERCHANT_DAILY LIMIT 100;"""
+sql = """SELECT * FROM NIQ_ERECEIPT.INOVEST.NIQ_QUANT_FEED_MERCHANT_DAILY where segment like '%All%' and cohort like '%13-mth%' and date > '2015-01-01' and merchant_name like '%Cash App%';"""
 results = run_sql(cur, sql)
+results = pd.DataFrame(data=results)
+results.columns = ['extractid', 'name', 'date', 'cohort', 'segment', 'numerUsers', 'numberOrders', 'averageBasketSize', 'orderTotal', 'totalItemCount', 'averageItemPrice', 'totalItemValue']
+results.sort_values(['date'], inplace = True)
 print(results)
+
+
+# analytics
