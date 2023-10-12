@@ -40,7 +40,7 @@ if False:
     print(results)
 
 ## run a sql
-sql = """SELECT * FROM NIQ_ERECEIPT.INOVEST.NIQ_QUANT_FEED_MERCHANT_DAILY where segment like '%All%' and cohort like '%13-mth%' and date > '2015-01-01' and merchant_name like '%Cash App%';"""
+sql = """SELECT * FROM NIQ_ERECEIPT.INOVEST.NIQ_QUANT_FEED_MERCHANT_DAILY where segment like '%All%' and cohort like '%13-mth%' and date > '2015-01-01' and upper(merchant_name) like '%IKEA%';"""
 results = run_sql(cur, sql)
 results = pd.DataFrame(data=results)
 results.columns = ['extractid', 'name', 'date', 'cohort', 'segment', 'numerUsers', 'numberOrders', 'averageBasketSize', 'orderTotal', 'totalItemCount', 'averageItemPrice', 'totalItemValue']
